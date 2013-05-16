@@ -131,9 +131,22 @@ class ApiTest < Test::Unit::TestCase
         @api.say_hello
       end
     end
-    should 'allow one to check api key validity' do
-      Mailchimp::API.stubs(:post).returns(Struct.new(:body).new(%q{"Everything's Chimpy!"}.to_json))
-      assert_equal true, @api.valid_api_key?
+
+    context "#valid_api_key?" do
+      should "use the endpoint ?method=ping" do
+        Mailchimp::API.expects(:post).with("https://us1.api.mailchimp.com/1.3/?method=ping", any_parameters).returns(Struct.new(:body).new(%q{"Everything's Chimpy!"}.to_json))
+        @api.valid_api_key?
+      end
+
+      should "return true if everything is chimpy" do
+        Mailchimp::API.stubs(:post).returns(Struct.new(:body).new(%q{"Everything's Chimpy!"}.to_json))
+        assert_equal true, @api.valid_api_key?
+      end
+
+      should "return false if everything isn't chimpy" do
+        Mailchimp::API.stubs(:post).returns(Struct.new(:body).new(%q{"Everything's Hiphopopotamussy!"}.to_json))
+        assert_equal false, @api.valid_api_key?
+      end
     end
   end
 

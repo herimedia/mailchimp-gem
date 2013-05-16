@@ -20,9 +20,9 @@ module Mailchimp
     def base_api_url
       "https://#{dc_from_api_key}api.mailchimp.com/1.3/?method="
     end
-    
+
     def valid_api_key?(*args)
-      %q{"Everything's Chimpy!"} == call("#{base_api_url}ping")
+      %q{"Everything's Chimpy!"} == call("ping")
     end
 
     protected
