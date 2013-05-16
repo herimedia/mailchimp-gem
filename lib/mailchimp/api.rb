@@ -22,7 +22,7 @@ module Mailchimp
     end
 
     def valid_api_key?(*args)
-      %q{"Everything's Chimpy!"} == call("ping")
+      "Everything's Chimpy!" == call("ping")
     end
 
     protected
